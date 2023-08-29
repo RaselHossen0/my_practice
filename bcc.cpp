@@ -4,6 +4,7 @@ using namespace std;
  vector<vector<int>> graph(500);
 vector<int> tin(100);
 vector<int> low(100);
+stack<pair<int,int>> edges;
  bool visited[100];
 int cnt=0;
  int d=0;
