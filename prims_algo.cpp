@@ -1,84 +1,78 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
 using namespace std;
 
-int V = 500;
+const int INF = INT_MAX;
 
-vector<vector<pair<int, int>>> graph(V); 
-bool mstSet[500];
-int parent[500];
-int key[500];
-void add_edge(int u, int v, int weight) {
-    graph[u].push_back({v, weight});
-    graph[v].push_back({u, weight});
-}
-//sudhu min key ta return kore
-int minKey(int key[]) {
-    int min = INT_MAX;
-    int min_index;
 
-    for (int v = 0; v < V; v++) {
-        if (mstSet[v] == false && key[v] < min) {
-            min = key[v];
-            min_index = v;
-        }
+void primMST(vector<vector<pair<int, int>>>& graph, int startVertex) {
+    int numVertices = graph.size();
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+    vector<bool> inMST(numVertices, false);
+
+    int MSTWeight = 0;
+    inMST[startVertex] = true;
+
+    for (auto edge : graph[startVertex]) {
+        pq.push({edge.second, edge.first});
     }
 
-    return min_index;
-}
+    // Repeat until the MST contains all vertices
+    while (!pq.empty()) {
+        pair<int, int> currentEdge = pq.top();
+        pq.pop();
 
-void printMST( int V) {
-    cout << "Edge \tWeight\n";
-    for (int i = 1; i < V; i++){
-        int r=graph[i][parent[i]].second;
-        cout << parent[i] << " - " <<i <<" ";
-        cout<< r  << " \n";
-       
+        int toVertex = currentEdge.second;
+        int weight = currentEdge.first;
+
+        // If the 'toVertex' is already in MST, skip this edge
+        if (inMST[toVertex]) {
+            continue;
         }
-}
 
-void primMST(int V) {
+        // Include the 'toVertex' in MST
+        inMST[toVertex] = true;
+        MSTWeight += weight;
 
-    for (int i = 0; i < V; i++) {
-        key[i] = INT_MAX;
-        mstSet[i] = false;
-    }
-
-    key[0] = 0;
-    parent[0] = -1;
-//toot
-    for (int count = 0; count < V - 1; count++) {
-        int u = minKey(key);
-        mstSet[u] = true;
-
-        for (auto &neighbor : graph[u]) {
-            int v = neighbor.first;
-            int weight = neighbor.second;
-
-            if (!mstSet[v] && weight < key[v]) {//u jar sathe connected ->v se agei mst te ase kina and tar weight soto kina 
-                parent[v] = u;
-                key[v] = weight;
+        // Add all adjacent edges of 'toVertex' to the priority queue
+        for (pair<int, int> edge : graph[toVertex]) {
+            if (!inMST[edge.first]) {
+                pq.push(make_pair(edge.second, edge.first));
             }
         }
     }
 
-    printMST( V);
+    // Print the MST weight
+    cout << "Minimum Spanning Tree Weight: " << MSTWeight << endl;
 }
 
 int main() {
-    
-int n;
-cin >> n;
-int ed;
-cin >> ed;
+    int numVertices, numEdges;
+   
+    cin >> numVertices >> numEdges;
 
-for(int i=0;i<ed;i++){
-    int u,v,w;
-    cin >> u >>v >> w;
-    add_edge(u,v,w);
-}
-    // Convert the graph to adjacency list
-    
-    // Print the solution
-    primMST(n);
+    // Create a graph as an adjacency list of pairs (toVertex, weight)
+    vector<vector<pair<int, int>>> graph(numVertices);
+
+  
+    for (int i = 0; i < numEdges; ++i) {
+        int from, to, weight;
+        cin >> from >> to >> weight;
+        graph[from].push_back(make_pair(to, weight));
+        graph[to].push_back(make_pair(from, weight));
+    }
+
+    int startVertex;
+    cout << "Enter the starting vertex: ";
+    cin >> startVertex;
+
+    // Find and print the MST using Prim's algorithm
+    primMST(graph, startVertex);
+
     return 0;
 }

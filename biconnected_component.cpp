@@ -8,13 +8,14 @@ const int N = 1e5 + 5;
 
 int n, m;
 vector<int> adj[N];
-int dfn[N], low[N], parent[N], timeStamp;
+int dfn[N], low[N], parent[N], tin;
 stack<int> S;
 vector<vector<int>> components;
 
 void dfs(int u) {
-  dfn[u] = low[u] = ++timeStamp;
+  dfn[u] = low[u] = ++tin;
   S.push(u);
+
 
   for (int v : adj[u]) {
     if (dfn[v] == 0) {

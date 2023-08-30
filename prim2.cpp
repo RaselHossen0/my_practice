@@ -10,7 +10,7 @@ vector<int> value(N, INT_MAX);
 priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > que; 
 
 void prims() {
-    que.push(make_pair(0, 1)); 
+    que.push({0,1}); //second ta holo node,first ta weight
     value[1]=0;                
     while (!que.empty()) {      
         int node = que.top().second; 

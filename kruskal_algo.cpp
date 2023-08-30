@@ -35,8 +35,8 @@ int main(){
 
     int n,e;
     cin >> n >> e;
-    vector<pair<int,int>> mst;
-    int wcnt[N]={0};
+    vector<pair<int,int>> mst;  //  cout<<w<<" ";
+     //   cout<<wcnt[w]<<endl;
     for(int i=0;i<e;i++){
         int u,v,w;
         cin >> u >> v >> w;
@@ -48,7 +48,7 @@ int main(){
     }
     for(int i=0;i<n;i++){
         int w=temp[i].first;
-        wcnt[w]++;
+     
 
     }
     sort(edge.begin(),edge.end());
@@ -58,34 +58,19 @@ int main(){
         u= edge[i].second.first;
         v=edge[i].second.second;
         if(find(u)==find(v)) {
-            // if(wcnt[w]>0)
-            // cout<<"At least one"<<endl;
-            // else
-            // cout<<"None"<<endl;
+       
 
             continue;
             }
         else{
             Union(u,v);
-            if(wcnt[w]>1) wcnt[w]+=1000;
-            else
-            wcnt[w]+=20;
-
-         //   cout<<"Any"<<endl;
+         
             mst.push_back({u,v});
         }
         
         //cout<<u<<" "<<v<<" "<<w<<endl;
     }
-    for(int i=0;i<e;i++){
-        int w=temp[i].first;
-      //  cout<<w<<" ";
-     //   cout<<wcnt[w]<<endl;
-        if(wcnt[w]>1000) cout<<"at least one"<<endl;
-        else if(wcnt[w]>=20&& wcnt[w]<1000) cout <<"any"<<endl;
-        else
-        cout<<"none"<<endl;
-    }
+   
     // for(int i=0;i<mst.size();i++) {
     //     cout<<mst[i].first<<" " << mst[i].second <<endl;
     // }

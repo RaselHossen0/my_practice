@@ -67,7 +67,6 @@ void scc(int n){
          cout<<node<<" ";
         if(!visited[node]){
             dfs2(node);
-           
         }
         
         else{
